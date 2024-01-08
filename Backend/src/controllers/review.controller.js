@@ -8,7 +8,7 @@ const create = async (req, res) => {
     const review = new reviewModel({
       user: req.user.id,
       movieId,
-      ...req.body
+      ...req.body,
     });
 
     await review.save();
@@ -16,9 +16,10 @@ const create = async (req, res) => {
     responseHandler.created(res, {
       ...review._doc,
       id: review.id,
-      user: req.user
+      user: req.user,
     });
-  } catch {
+  } catch (error) {
+    console.error("Error in create review:", error);
     responseHandler.error(res);
   }
 };
@@ -29,27 +30,33 @@ const remove = async (req, res) => {
 
     const review = await reviewModel.findOne({
       _id: reviewId,
-      user: req.user.id
+      user: req.user.id,
     });
 
-    if (!review) return responseHandler.notfound(res);
+    if (!review) {
+      return responseHandler.notfound(res);
+    }
 
     await review.remove();
 
     responseHandler.ok(res);
-  } catch {
+  } catch (error) {
+    console.error("Error in remove review:", error);
     responseHandler.error(res);
   }
 };
 
 const getReviewsOfUser = async (req, res) => {
   try {
-    const reviews = await reviewModel.find({
-      user: req.user.id
-    }).sort("-createdAt");
+    const reviews = await reviewModel
+      .find({
+        user: req.user.id,
+      })
+      .sort("-createdAt");
 
     responseHandler.ok(res, reviews);
-  } catch {
+  } catch (error) {
+    console.error("Error in getReviewsOfUser:", error);
     responseHandler.error(res);
   }
 };

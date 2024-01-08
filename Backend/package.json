@@ -1,11 +1,11 @@
 {
-  "name": "NetBit_Server",
+  "name": "@netbit/server",
   "type": "module",
   "version": "0.0.1",
   "author": "Muhammad Ahmed, Suleiman Afzal, Ghazanfa Ijaz",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "axios": "^1.2.0",

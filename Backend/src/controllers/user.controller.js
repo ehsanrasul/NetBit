@@ -8,7 +8,9 @@ const signup = async (req, res) => {
 
     const checkUser = await userModel.findOne({ username });
 
-    if (checkUser) return responseHandler.badrequest(res, "username already used");
+    if (checkUser) {
+      return responseHandler.badrequest(res, "username already used");
+    }
 
     const user = new userModel();
     user.displayName = displayName;
@@ -22,13 +24,12 @@ const signup = async (req, res) => {
       process.env.TOKEN_SECRET_KEY,
       { expiresIn: "24h" }
     );
-    
+
     responseHandler.created(res, {
       token,
       ...user._doc,
-      id: user.id
+      id: user.id,
     });
-
   } catch {
     responseHandler.error(res);
   }
@@ -38,11 +39,17 @@ const signin = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await userModel.findOne({ username }).select("username password salt id displayName");
+    const user = await userModel
+      .findOne({ username })
+      .select("username password salt id displayName");
 
-    if (!user) return responseHandler.badrequest(res, "User not exist");
+    if (!user) {
+      return responseHandler.badrequest(res, "User not exist");
+    }
 
-    if (!user.validPassword(password)) return responseHandler.badrequest(res, "Wrong password");
+    if (!user.validPassword(password)) {
+      return responseHandler.badrequest(res, "Wrong password");
+    }
 
     const token = jsonwebtoken.sign(
       { data: user.id },
@@ -56,7 +63,7 @@ const signin = async (req, res) => {
     responseHandler.created(res, {
       token,
       ...user._doc,
-      id: user.id
+      id: user.id,
     });
   } catch {
     responseHandler.error(res);
@@ -67,11 +74,17 @@ const updatePassword = async (req, res) => {
   try {
     const { password, newPassword } = req.body;
 
-    const user = await userModel.findById(req.user.id).select("password id salt");
+    const user = await userModel
+      .findById(req.user.id)
+      .select("password id salt");
 
-    if (!user) return responseHandler.unauthorize(res);
+    if (!user) {
+      return responseHandler.unauthorize(res);
+    }
 
-    if (!user.validPassword(password)) return responseHandler.badrequest(res, "Wrong password");
+    if (!user.validPassword(password)) {
+      return responseHandler.badrequest(res, "Wrong password");
+    }
 
     user.setPassword(newPassword);
 
@@ -87,7 +100,9 @@ const getInfo = async (req, res) => {
   try {
     const user = await userModel.findById(req.user.id);
 
-    if (!user) return responseHandler.notfound(res);
+    if (!user) {
+      return responseHandler.notfound(res);
+    }
 
     responseHandler.ok(res, user);
   } catch {
@@ -95,19 +110,15 @@ const getInfo = async (req, res) => {
   }
 };
 
-
-const Subcribe = async (req, res) =>{
-
+const Subcribe = async (req, res) => {
   try {
-    console.log("alien")
     const user = await userModel.findById(req.user.id);
 
+    if (!user) {
+      return responseHandler.unauthorize(res);
+    }
 
-    if (!user) return responseHandler.unauthorize(res);
-
-   
-
-    user.subscription = "premium"
+    user.subscription = "premium";
 
     await user.save();
 
@@ -115,21 +126,17 @@ const Subcribe = async (req, res) =>{
   } catch {
     responseHandler.error(res);
   }
+};
 
-}
-
-const UnSubcribe = async (req, res) =>{
-
+const UnSubcribe = async (req, res) => {
   try {
-   
     const user = await userModel.findById(req.user.id);
 
+    if (!user) {
+      return responseHandler.unauthorize(res);
+    }
 
-    if (!user) return responseHandler.unauthorize(res);
-
-   
-
-    user.subscription = "free"
+    user.subscription = "free";
 
     await user.save();
 
@@ -137,8 +144,7 @@ const UnSubcribe = async (req, res) =>{
   } catch {
     responseHandler.error(res);
   }
-
-}
+};
 
 export default {
   signup,
@@ -146,5 +152,5 @@ export default {
   getInfo,
   updatePassword,
   Subcribe,
-  UnSubcribe
+  UnSubcribe,
 };
