@@ -1,6 +1,7 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
@@ -29,6 +30,7 @@ import PosterSlide from "../../components/Sliders/PosterSlide";
 import RecommendSlide from "../../components/Sliders/RecommendSlide";
 import MediaSlide from "../../components/Media/MediaSlide";
 import MediaReview from "../../components/Media/MediaReview";
+import TorrentIndexer from "torrent-indexer";
 
 const MediaDetail = () => {
   const { mediaType, mediaId } = useParams();
@@ -39,6 +41,7 @@ const MediaDetail = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [onRequest, setOnRequest] = useState(false);
   const [genres, setGenres] = useState([]);
+  const [torrentLinks, setTorrentLinks] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -112,6 +115,16 @@ const MediaDetail = () => {
       toast.success("Remove favorite success");
     }
   };
+
+  useEffect(() => {
+    const getTorrent = async() => {
+      const torrentIndexer = new TorrentIndexer();
+      const torrents = await torrentIndexer.search(media.title);
+      setTorrentLinks(torrents);
+    };
+
+    getTorrent();
+  }, [media])
 
   return (
     media ? (
@@ -209,6 +222,44 @@ const MediaDetail = () => {
                     >
                       watch now
                     </Button>
+                    {user.subscription === 'premium' ? (
+                      torrentLinks.length > 0 ? (
+                        <NativeSelect
+                          defaultValue={-1}
+                          inputProps={{
+                            name: 'age',
+                            id: 'uncontrolled-native',
+                          }}
+                          onChange={(event) => {
+                            const selectedIndex = event.target.value;
+                            const selectedTorrent = torrentLinks[selectedIndex];
+                            window.open(selectedTorrent.link, '_blank'); // Open the selected URL in a new tab
+                          }}
+                        >
+                          <option value={-1}>Select Torrent File</option>
+                          {torrentLinks.map((torrent, index) => (
+                            <option key={index} value={index}>
+                              {torrent.title} ( {torrent.size} ) Se: {torrent.seeders} Le: {torrent.leechers}
+                            </option>
+                          ))}
+                          
+                        </NativeSelect>
+                      ) : (
+                        <NativeSelect
+                          defaultValue={-1}
+                          inputProps={{
+                            name: 'age',
+                            id: 'uncontrolled-native',
+                          }}
+                        >
+                          <option value={-1}>No Torrent Files Found</option>
+                        </NativeSelect>
+                      )
+                    ) : (
+                      <Button onClick={() => toast.info("You need to upgrade to premium to download this movie")}>
+                        Download Movie
+                      </Button>
+                    )}
                   </Stack>
                   {/* buttons */}
 
