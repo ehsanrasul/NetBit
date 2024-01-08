@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SwiperSlide } from "swiper/react";
 import mediaApi from "../../api/modules/media.api";
-import AutoSwiper from "./AutoSwiper";
+import AutoSwiper from "../Swipers/AutoSwiper";
 import { toast } from "react-toastify";
 import MediaItem from "./MediaItem";
 

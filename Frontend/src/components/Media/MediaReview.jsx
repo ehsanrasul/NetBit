@@ -6,9 +6,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
-import Container from "./Container";
+import Container from "../common/Container";
 import reviewApi from "../../api/modules/review.api";
-import TextAvatar from "./TextAvatar";
+import TextAvatar from "../common/TextAvatar";
 
 const ReviewItem = ({ review, onRemoved }) => {
   const { user } = useSelector((state) => state.user);

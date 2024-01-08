@@ -1,7 +1,7 @@
 import { Box, Toolbar, Typography, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import PersonMediaGrid from "../components/common/PersonMediaGrid";
+import PersonMediaGrid from "../components/Media/PersonMediaGrid";
 import tmdbConfigs from "../api/configs/tmdb.configs";
 import uiConfigs from "../configs/ui.configs";
 import Container from "../components/common/Container";

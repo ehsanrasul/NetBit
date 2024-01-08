@@ -4,7 +4,7 @@ import { Box, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import MediaItem from "../components/common/MediaItem";
+import MediaItem from "../components/Media/MediaItem";
 import Container from "../components/common/Container";
 import uiConfigs from "../configs/ui.configs";
 import favoriteApi from "../api/modules/favorite.api";

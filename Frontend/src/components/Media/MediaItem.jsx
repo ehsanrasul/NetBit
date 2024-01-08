@@ -6,7 +6,7 @@ import tmdbConfigs from "../../api/configs/tmdb.configs";
 import uiConfigs from "../../configs/ui.configs";
 import { routesGen } from "../../routes/routes";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import CircularRate from "./CircularRate";
+import CircularRate from "../common/CircularRate";
 import { useSelector } from "react-redux";
 import favoriteUtils from "../../utils/favorite.utils";
 

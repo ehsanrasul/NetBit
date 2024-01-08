@@ -9,8 +9,8 @@ import menuConfigs from "../../configs/menu.configs";
 import { themeModes } from "../../configs/theme.configs";
 import { setAuthModalOpen } from "../../redux/features/authModalSlice";
 import { setThemeMode } from "../../redux/features/themeModeSlice";
-import Logo from "./Logo";
-import UserMenu from "./UserMenu";
+import Logo from "../common/Logo";
+import UserMenu from "../common/UserMenu";
 import Sidebar from "./Sidebar";
 
 const ScrollAppBar = ({ children, window }) => {

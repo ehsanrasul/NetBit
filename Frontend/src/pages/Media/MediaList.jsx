@@ -3,15 +3,15 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import tmdbConfigs from "../api/configs/tmdb.configs";
-import mediaApi from "../api/modules/media.api";
-import uiConfigs from "../configs/ui.configs";
-import HeroSlide from "../components/common/HeroSlide";
-import MediaGrid from "../components/common/MediaGrid";
-import { setAppState } from "../redux/features/appStateSlice";
-import { setGlobalLoading } from "../redux/features/globalLoadingSlice";
+import tmdbConfigs from "../../api/configs/tmdb.configs";
+import mediaApi from "../../api/modules/media.api";
+import uiConfigs from "../../configs/ui.configs";
+import HeroSlide from "../../components/common/HeroSlide";
+import MediaGrid from "../../components/Media/MediaGrid";
+import { setAppState } from "../../redux/features/appStateSlice";
+import { setGlobalLoading } from "../../redux/features/globalLoadingSlice";
 import { toast } from "react-toastify";
-import usePrevious from "../hooks/usePrevious";
+import usePrevious from "../../hooks/usePrevious";
 
 const MediaList = () => {
   const { mediaType } = useParams();
