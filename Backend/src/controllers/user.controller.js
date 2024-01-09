@@ -91,6 +91,7 @@ const updatePassword = async (req, res) => {
     await user.save();
 
     responseHandler.ok(res);
+    console.log("successfully updated password");
   } catch {
     responseHandler.error(res);
   }
@@ -119,10 +120,12 @@ const Subcribe = async (req, res) => {
     }
 
     user.subscription = "premium";
+    console.log(user.subscription);
 
     await user.save();
 
     responseHandler.ok(res);
+    console.log("successfully subscribed");
   } catch {
     responseHandler.error(res);
   }
@@ -141,6 +144,8 @@ const UnSubcribe = async (req, res) => {
     await user.save();
 
     responseHandler.ok(res);
+    console.log("successfully unsubscribed");
+
   } catch {
     responseHandler.error(res);
   }

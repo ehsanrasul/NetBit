@@ -28,7 +28,7 @@ export default mongoose.model(
     },
     mediaPoster: {
       type: String,
-      required: true
+      required: false
     },
   }, modelOptions)
 );
