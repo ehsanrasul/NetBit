@@ -2,6 +2,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import PasswordUpdate from './PasswordUpdate';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../api/modules/user.api', () => ({
   passwordUpdate: jest.fn(() => ({ response: null, err: null })),
@@ -17,7 +18,7 @@ describe('PasswordUpdate Component', () => {
   beforeEach(() => {
     store = mockStore({
       user: {
-        user: {}, // Mock your user state here
+        user: {}, 
       },
     });
   });
@@ -40,11 +41,11 @@ describe('PasswordUpdate Component', () => {
       </Provider>
     );
 
-    fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'oldPassword' } });
-    fireEvent.change(screen.getByPlaceholderText(/new password/i), { target: { value: 'newPassword' } });
-    fireEvent.change(screen.getByPlaceholderText(/confirm new password/i), { target: { value: 'newPassword' } });
+    userEvent.type(screen.getByPlaceholderText(/password/i), 'oldPassword');
+    userEvent.type(screen.getByPlaceholderText(/new password/i), 'newPassword');
+    userEvent.type(screen.getByPlaceholderText(/confirm new password/i), 'newPassword');
 
-    fireEvent.click(screen.getByRole('button', { name: /update password/i }));
+    userEvent.click(screen.getByRole('button', { name: /update password/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/update password success/i)).toBeInTheDocument();
@@ -60,17 +61,15 @@ describe('PasswordUpdate Component', () => {
 
     const subscribeButton = screen.getByRole('button', { name: /subscribe/i });
 
-    fireEvent.change(subscribeButton, { target: { value: 'free' } });
-
-    fireEvent.click(subscribeButton);
+    userEvent.selectOptions(subscribeButton, 'free');
+    userEvent.click(subscribeButton);
 
     await waitFor(() => {
       expect(screen.getByText(/subscribed successfully/i)).toBeInTheDocument();
     });
 
-    fireEvent.change(subscribeButton, { target: { value: 'premium' } });
-
-    fireEvent.click(subscribeButton);
+    userEvent.selectOptions(subscribeButton, 'premium');
+    userEvent.click(subscribeButton);
 
     await waitFor(() => {
       expect(screen.getByText(/unsubscribed successfully/i)).toBeInTheDocument();
